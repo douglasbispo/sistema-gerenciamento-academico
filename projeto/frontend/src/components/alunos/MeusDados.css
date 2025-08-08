@@ -1,0 +1,32 @@
+.meus-dados-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.meus-dados-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.dados-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dados-card p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.dados-card strong {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}

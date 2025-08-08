@@ -1,0 +1,36 @@
+.minhas-disciplinas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.minhas-disciplinas-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.disciplinas-list {
+    list-style: none;
+    padding: 0;
+    width: 80%;
+    max-width: 600px;
+}
+
+.disciplina-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #555;
+}
+
+.disciplina-item strong {
+    font-weight: bold;
+    color: #333;
+}

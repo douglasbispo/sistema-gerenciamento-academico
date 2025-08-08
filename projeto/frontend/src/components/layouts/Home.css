@@ -1,0 +1,35 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: calc(100vh - 40px); /* Altura da tela menos o padding */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.home-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 700px;
+}
+
+.home-card h2 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.home-card p {
+    font-size: 1.2em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.home-card p.subtitle {
+    font-style: italic;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+}

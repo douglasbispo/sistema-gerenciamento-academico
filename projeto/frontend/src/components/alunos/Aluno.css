@@ -1,0 +1,149 @@
+/* Estilos para o formulário de alunos */
+.aluno-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.aluno-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.aluno-form .error-message {
+    color: #e74c3c;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.aluno-form button {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.aluno-form button:hover {
+    background-color: #34495e;
+}
+
+.aluno-form .cancel-button {
+    background-color: #bdc3c7;
+    color: #333;
+}
+
+.aluno-form .cancel-button:hover {
+    background-color: #95a5a6;
+}
+
+/* Estilos para a lista de alunos */
+.aluno-list {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.aluno-list h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.aluno-list .add-button {
+    background-color: #27ae60;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.aluno-list .add-button:hover {
+    background-color: #229954;
+}
+
+.aluno-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.aluno-list th, .aluno-list td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.aluno-list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.aluno-list td button {
+    padding: 8px 12px;
+    margin-right: 5px;
+}
+
+.aluno-list .edit-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.aluno-list .edit-button:hover {
+    background-color: #2980b9;
+}
+
+.aluno-list .delete-button {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.aluno-list .delete-button:hover {
+    background-color: #c0392b;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .aluno-form {
+        grid-template-columns: 1fr;
+    }
+    .aluno-list table,
+    .aluno-list thead,
+    .aluno-list tbody,
+    .aluno-list th,
+    .aluno-list td,
+    .aluno-list tr {
+        display: block;
+    }
+    .aluno-list thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    .aluno-list tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+    .aluno-list td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+    .aluno-list td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        font-weight: bold;
+        text-align: left;
+        color: #2c3e50;
+    }
+}

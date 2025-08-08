@@ -1,0 +1,148 @@
+/* Estilos para o formulário de disciplina */
+.disciplina-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.disciplina-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.disciplina-form .error-message {
+    color: #e74c3c;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.disciplina-form button {
+    padding: 12px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.disciplina-form button:hover {
+    background-color: #34495e;
+}
+
+.disciplina-form .cancel-button {
+    background-color: #bdc3c7;
+    color: #333;
+}
+
+.disciplina-form .cancel-button:hover {
+    background-color: #95a5a6;
+}
+
+/* Estilos para a lista de disciplina */
+.disciplina-list {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.disciplina-list h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.disciplina-list .add-button {
+    background-color: #27ae60;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.disciplina-list .add-button:hover {
+    background-color: #229954;
+}
+
+.disciplina-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.disciplina-list th, .disciplina-list td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.disciplina-list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.disciplina-list td button {
+    padding: 8px 12px;
+    margin-right: 5px;
+}
+
+.disciplina-list .edit-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.disciplina-list .edit-button:hover {
+    background-color: #2980b9;
+}
+
+.disciplina-list .delete-button {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.disciplina-list .delete-button:hover {
+    background-color: #c0392b;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .disciplina-form {
+        flex-direction: column;
+    }
+    .disciplina-list table,
+    .disciplina-list thead,
+    .disciplina-list tbody,
+    .disciplina-list th,
+    .disciplina-list td,
+    .disciplina-list tr {
+        display: block;
+    }
+    .disciplina-list thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    .disciplina-list tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+    .disciplina-list td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+    .disciplina-list td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        font-weight: bold;
+        text-align: left;
+        color: #2c3e50;
+    }
+}

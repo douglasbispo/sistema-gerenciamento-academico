@@ -1,0 +1,77 @@
+.aluno-detalhes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.aluno-detalhes-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.detalhes-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detalhes-card p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.detalhes-card strong {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px; /* Adiciona um espaço entre os botões */
+}
+
+.back-button, .edit-button, .delete-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.back-button {
+    background-color: #6c757d; /* Cinza */
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+.edit-button {
+    background-color: #007bff; /* Azul */
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #dc3545; /* Vermelho */
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
