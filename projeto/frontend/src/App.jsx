@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import Login from './components/login/Login';
+import MainLayout from './components/layouts/MainLayout';
+import Home from './components/layouts/Home';
+import AlunoList from './components/alunos/AlunoList';
+import DisciplinaList from './components/disciplinas/DisciplinaList';
+import GerenciarDisciplinas from './components/alunos/GerenciarDisciplinas';
+import ExibirDisciplinas from './components/alunos/ExibirDisciplinas';
+import './App.css'; // Mantenha ou remova este import se não for usar estilos globais
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+    const [currentPage, setCurrentPage] = useState('home');
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const handleLoginSuccess = (userData) => {
+        setIsLoggedIn(true);
+        setUser(userData);
+        setCurrentPage('home'); // Define a página inicial após o login
+    };
+
+    const handleNavigate = (page) => {
+        setCurrentPage(page);
+    };
+
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'home':
+                return <Home />;
+            case 'alunos':
+                return <AlunoList />;
+            case 'disciplinas':
+                return <DisciplinaList />;
+            case 'gerenciar':
+                return <GerenciarDisciplinas />;
+            case 'consultar':
+                return <ExibirDisciplinas />;
+            default:
+                return <Home />;
+        }
+    };
+
+    if (!isLoggedIn) {
+        return <Login onLoginSuccess={handleLoginSuccess} />;
+    }
+
+    return (
+        <MainLayout onNavigate={handleNavigate}>
+            {renderPage()}
+        </MainLayout>
+    );
 }
 
-export default App
+export default App;
