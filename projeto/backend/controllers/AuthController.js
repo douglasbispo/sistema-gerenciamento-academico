@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 // A chave secreta será armazenada em variáveis de ambiente em produção
 const jwtSecret = process.env.JWT_SECRET;
-console.log("AuthController - JWT_SECRET:", jwtSecret);
 
 exports.login = async (req, res) => {
     const { email, senha } = req.body;

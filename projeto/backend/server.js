@@ -1,9 +1,9 @@
 require('dotenv').config();
-console.log("JWT_SECRET carregado:", process.env.JWT_SECRET);
+
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const routes = require('./routes/router'); // Importa o arquivo principal de rotas
+const routes = require('./routes/router');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,12 +15,12 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// Usar o arquivo principal de rotas com o prefixo /api
+// Arquivo principal de rotas
 app.use('/api', routes);
 
-// Rota de teste para verificar se o servidor está funcionando
+// Rota teste para verificar se o servidor está funcionando
 app.get('/', (req, res) => {
-    res.send('API do Projeto de Programação para Internet II está rodando!');
+    res.send('API do Projeto está rodando!');
 });
 
 app.listen(PORT, () => {

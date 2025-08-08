@@ -7,7 +7,7 @@ const jwtSecret = process.env.JWT_SECRET;
 exports.protect = (req, res, next) => {
     let token;
 
-    // Token que vem no cabeçalho 'Authorization'
+    // O token vem no cabeçalho 'Authorization' como 'Bearer TOKEN'
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
@@ -36,7 +36,7 @@ exports.admin = (req, res, next) => {
     }
 };
 
-// Middleware para restringir acesso apenas a alunos (opcional, dependendo da rota)
+// Middleware para restringir acesso apenas a alunos, caso precise
 exports.aluno = (req, res, next) => {
     if (req.user && req.user.role === 'aluno') {
         next();

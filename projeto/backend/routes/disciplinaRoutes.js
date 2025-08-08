@@ -3,7 +3,7 @@ const router = express.Router();
 const disciplinaController = require('../controllers/DisciplinaController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
-// Rotas de CRUD de disciplinas, restritas a administradores
+// Rotas para administradores
 router.route('/').get(protect, admin, disciplinaController.getAllDisciplinas);
 router.route('/').post(protect, admin, disciplinaController.createDisciplina);
 router.route('/:id').get(protect, admin, disciplinaController.getDisciplinaById);

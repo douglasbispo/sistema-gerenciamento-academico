@@ -1,5 +1,5 @@
-  
 const Disciplina = require('../models/Disciplina');
+const AlunoDisciplina = require('../models/AlunoDisciplina');
 
 exports.createDisciplina = async (req, res) => {
     try {
@@ -46,10 +46,18 @@ exports.updateDisciplina = async (req, res) => {
 
 exports.deleteDisciplina = async (req, res) => {
     try {
-        const disciplinaDeletada = await Disciplina.findByIdAndDelete(req.params.id);
+        const disciplinaId = req.params.id;
+
+        // Primeiro, deleta todos os registros de alocação que se referem a esta disciplina
+        await AlunoDisciplina.deleteMany({ disciplina: disciplinaId });
+
+        // Depois, deleta a disciplina em si
+        const disciplinaDeletada = await Disciplina.findByIdAndDelete(disciplinaId);
+
         if (!disciplinaDeletada) {
             return res.status(404).json({ message: 'Disciplina não encontrada' });
         }
+        
         res.status(200).json({ message: 'Disciplina deletada com sucesso' });
     } catch (error) {
         res.status(500).json({ message: error.message });

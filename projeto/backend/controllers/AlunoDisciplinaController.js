@@ -8,6 +8,11 @@ exports.alocarDisciplina = async (req, res) => {
         await alocacao.save();
         res.status(201).json(alocacao);
     } catch (error) {
+        // Verifica se o erro é por chave duplicada (código E11000)
+        if (error.code === 11000) {
+            return res.status(400).json({ message: 'Essa disciplina já está alocada para este aluno.' });
+        }
+
         res.status(400).json({ message: error.message });
     }
 };
@@ -17,9 +22,9 @@ exports.desalocarDisciplina = async (req, res) => {
     try {
         const resultado = await AlunoDisciplina.findOneAndDelete({ aluno: alunoId, disciplina: disciplinaId });
         if (!resultado) {
-            return res.status(404).json({ message: 'Alocação não encontrada' });
+            return res.status(404).json({ message: 'Alocação não encontrada.' });
         }
-        res.status(200).json({ message: 'Disciplina desalocada com sucesso' });
+        res.status(200).json({ message: 'Disciplina desalocada com sucesso.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

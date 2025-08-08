@@ -2,20 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const UsuarioSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    senha: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        enum: ['aluno', 'admin'],
-        default: 'aluno'
-    }
+    email: { type: String, required: true,unique: true },
+    senha: { type: String, required: true },
+    role: { type: String, enum: ['aluno', 'admin'], default: 'aluno' }
 });
 
 // Pré-processamento antes de salvar o usuário
