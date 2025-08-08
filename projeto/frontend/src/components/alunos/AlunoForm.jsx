@@ -1,81 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import api from '../../services/api';
+import './Aluno.css';
+
+const validationSchema = Yup.object({
+    nome: Yup.string().required('Nome é obrigatório.'),
+    endereco: Yup.string().required('Endereço é obrigatório.'),
+    dataNascimento: Yup.date().required('Data de Nascimento é obrigatória.').nullable(),
+    cpf: Yup.string().required('CPF é obrigatório.').matches(/^\d{11}$/, 'CPF deve ter 11 dígitos.'),
+    matricula: Yup.string().required('Matrícula é obrigatória.'),
+    telefone: Yup.string().required('Telefone é obrigatório.'),
+    email: Yup.string().email('Email inválido.').required('Email é obrigatório.'),
+    curso: Yup.string().required('Curso é obrigatório.'),
+    senha: Yup.string()
+        .min(6, 'A senha deve ter no mínimo 6 caracteres.')
+        .when('$isNew', {
+            is: (isNew) => isNew,
+            then: (schema) => schema.required('A senha é obrigatória.'),
+        }),
+});
 
 const AlunoForm = ({ aluno, onSaveSuccess, onCancel }) => {
-    const [formData, setFormData] = useState({
-        nome: '',
-        endereco: '',
-        dataNascimento: '',
-        cpf: '',
-        matricula: '',
-        telefone: '',
-        email: '',
-        curso: '',
-        senha: ''
+
+    const formik = useFormik({
+        initialValues: {
+            nome: '',
+            endereco: '',
+            dataNascimento: '',
+            cpf: '',
+            matricula: '',
+            telefone: '',
+            email: '',
+            curso: '',
+            senha: '',
+        },
+        validationSchema,
+        /* validationContext: { isNew: !aluno }, */
+        context: { isNew: !aluno },
+        onSubmit: async (values) => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                toast.error('Sua sessão expirou. Faça login novamente.');
+                return;
+            }
+
+            try {
+                const config = { headers: {Authorization: `Bearer ${token}`} };
+
+                if (aluno) {
+                    await api.put(`http://localhost:5000/api/alunos/${aluno._id}`, values, config);
+
+                    toast.success('Aluno editado com sucesso!');
+                } else {
+                    await api.post('http://localhost:5000/api/alunos', values, config);
+
+                    toast.success('Aluno adicionado com sucesso!');
+                }
+                
+                onSaveSuccess();
+            } catch (error) {
+                if (error.response && error.response.status !== 401) {
+                    toast.error(error.response?.data?.message || 'Erro ao salvar aluno.');
+                }
+                console.error('Erro ao salvar aluno:', error);
+            }
+        },
     });
 
     useEffect(() => {
         if (aluno) {
-            setFormData({
+            formik.setValues({
                 nome: aluno.nome,
                 endereco: aluno.endereco,
-                dataNascimento: aluno.dataNascimento.substring(0, 10), // Formata a data para o input
+                dataNascimento: aluno.dataNascimento.substring(0, 10),
                 cpf: aluno.cpf,
                 matricula: aluno.matricula,
                 telefone: aluno.telefone,
                 email: aluno.email,
                 curso: aluno.curso,
-                senha: '' // A senha não é exibida para edição por segurança
-            });
-        } else {
-            setFormData({
-                nome: '',
-                endereco: '',
-                dataNascimento: '',
-                cpf: '',
-                matricula: '',
-                telefone: '',
-                email: '',
-                curso: '',
-                senha: ''
+                senha: '',
             });
         }
     }, [aluno]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            if (aluno) {
-                // Requisição PUT para editar
-                await axios.put(`http://localhost:5000/api/alunos/${aluno._id}`, formData);
-            } else {
-                // Requisição POST para criar
-                await axios.post('http://localhost:5000/api/alunos', formData);
-            }
-            onSaveSuccess();
-        } catch (error) {
-            console.error('Erro ao salvar aluno:', error.response.data);
-        }
-    };
-
     return (
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-            <input type="text" name="nome" placeholder="Nome" value={formData.nome} onChange={handleChange} required />
-            <input type="text" name="endereco" placeholder="Endereço" value={formData.endereco} onChange={handleChange} required />
-            <input type="date" name="dataNascimento" placeholder="Data de Nascimento" value={formData.dataNascimento} onChange={handleChange} required />
-            <input type="text" name="cpf" placeholder="CPF" value={formData.cpf} onChange={handleChange} required />
-            <input type="text" name="matricula" placeholder="Matrícula" value={formData.matricula} onChange={handleChange} required />
-            <input type="text" name="telefone" placeholder="Telefone" value={formData.telefone} onChange={handleChange} required />
-            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-            <input type="text" name="curso" placeholder="Curso" value={formData.curso} onChange={handleChange} required />
-            <input type="password" name="senha" placeholder="Senha" value={formData.senha} onChange={handleChange} required={!aluno} />
-            <button type="submit" style={{ gridColumn: 'span 2' }}>{aluno ? 'Salvar Alterações' : 'Adicionar Aluno'}</button>
-            {aluno && <button type="button" onClick={onCancel} style={{ gridColumn: 'span 2', backgroundColor: '#ddd' }}>Cancelar</button>}
+        <form onSubmit={formik.handleSubmit} className="aluno-form">
+            {['nome', 'endereco', 'dataNascimento', 'cpf', 'matricula', 'telefone', 'email', 'curso'].map((name) => (
+                <div key={name}>
+                    <input
+                        type={name === 'dataNascimento' ? 'date' : 'text'}
+                        name={name}
+                        placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
+                        value={formik.values[name]}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched[name] && formik.errors[name] ? (
+                        <div className="error-message">{formik.errors[name]}</div>
+                    ) : null}
+                </div>
+            ))}
+            <div>
+                <input
+                    type="password"
+                    name="senha"
+                    placeholder="Senha"
+                    value={formik.values.senha}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    required={!aluno}
+                />
+                {formik.touched.senha && formik.errors.senha ? (
+                    <div className="error-message">{formik.errors.senha}</div>
+                ) : null}
+            </div>
+            <button type="submit" disabled={formik.isSubmitting}>{aluno ? 'Salvar Alterações' : 'Adicionar Aluno'}</button>
+            <button type="button" onClick={onCancel} className="cancel-button">Cancelar</button>
+            {/* {aluno && <button type="button" onClick={onCancel} className="cancel-button">Cancelar</button>} */}
         </form>
     );
 };
