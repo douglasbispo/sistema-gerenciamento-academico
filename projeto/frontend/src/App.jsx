@@ -4,9 +4,9 @@ import MainLayout from './components/layouts/MainLayout';
 import Home from './components/layouts/Home';
 import AlunoList from './components/alunos/AlunoList';
 import DisciplinaList from './components/disciplinas/DisciplinaList';
-import GerenciarDisciplinas from './components/alunos/GerenciarDisciplinas';
-import ExibirDisciplinas from './components/alunos/ExibirDisciplinas';
-import './App.css'; // Mantenha ou remova este import se não for usar estilos globais
+import GerenciarDisciplinas from './components/disciplinas/GerenciarDisciplinas';
+import ExibirDisciplinas from './components/disciplinas/ExibirDisciplinas';
+import './App.css';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

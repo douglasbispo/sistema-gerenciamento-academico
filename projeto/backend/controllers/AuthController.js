@@ -1,22 +1,29 @@
- 
-const Aluno = require('../models/Aluno');
+const Usuario = require('../models/Usuario');
+const jwt = require('jsonwebtoken');
+
+// A chave secreta será armazenada em variáveis de ambiente em produção
+const jwtSecret = process.env.JWT_SECRET;
+console.log("AuthController - JWT_SECRET:", jwtSecret);
 
 exports.login = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
-        const aluno = await Aluno.findOne({ email });
+        const usuario = await Usuario.findOne({ email });
 
-        if (aluno && (await aluno.matchPassword(senha))) {
-            // Login bem-sucedido
+        if (usuario && (await usuario.matchPassword(senha))) {
+            // Gerar o token JWT
+            const token = jwt.sign(
+                { id: usuario._id, role: usuario.role },
+                jwtSecret,
+                { expiresIn: '1h' }
+            );
+
+            // Login bem-sucedido, retorna o token e o papel do usuário
             res.status(200).json({
                 message: 'Login bem-sucedido',
-                aluno: {
-                    id: aluno._id,
-                    nome: aluno.nome,
-                    email: aluno.email,
-                    matricula: aluno.matricula
-                }
+                token,
+                role: usuario.role
             });
         } else {
             // Credenciais inválidas
