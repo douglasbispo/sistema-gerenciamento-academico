@@ -2,6 +2,7 @@
 const Aluno = require('../models/Aluno');
 const Usuario = require('../models/Usuario');
 const AlunoDisciplina = require('../models/AlunoDisciplina');
+const bcrypt = require('bcryptjs');
 
 // Lógica de criação de aluno, incluindo a criação do usuário
 exports.createAluno = async (req, res) => {
@@ -28,7 +29,7 @@ exports.createAluno = async (req, res) => {
         await usuario.save();
         
         // Cria o aluno
-        const aluno = new Aluno({ nome, endereco, dataNascimento, cpf, matricula, telefone, email, curso });
+        const aluno = new Aluno({ nome, endereco, dataNascimento, cpf, matricula, telefone, email: usuario.email, curso });
         await aluno.save();
 
         res.status(201).json(aluno);
@@ -60,10 +61,49 @@ exports.getAlunoById = async (req, res) => {
 
 exports.updateAluno = async (req, res) => {
     try {
-        const alunoAtualizado = await Aluno.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!alunoAtualizado) {
-            return res.status(404).json({ message: 'Aluno não encontrado' });
+        const { email, senha, ...dadosAluno } = req.body;
+
+        // Busca o aluno antes de atualizar para ter o email antigo
+        const alunoAntigo = await Aluno.findById(req.params.id);
+        if (!alunoAntigo) {
+            return res.status(404).json({ message: 'Aluno não encontrado.' });
         }
+
+        // Busca o usuário vinculado pelo email antigo
+        const usuario = await Usuario.findOne({ email: alunoAntigo.email });
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuário correspondente não encontrado.' });
+        }
+
+        // Atualiza email, se informado
+        if (email) {
+            // Verifica duplicidade
+            const emailExists = await Usuario.findOne({ email });
+            if (emailExists && String(emailExists._id) !== String(usuario._id)) {
+                return res.status(400).json({ message: 'Email já cadastrado.' });
+            }
+            usuario.email = email;
+            dadosAluno.email = email; // garante que o Aluno também será atualizado
+        }
+
+        // Atualiza senha, se informada
+        if (senha) {
+            usuario.senha = senha;
+        }
+
+        // Salva alterações no usuário
+        if (email || senha) {
+            await usuario.save();
+        }
+
+
+        // Atualiza dados do aluno
+        const alunoAtualizado = await Aluno.findByIdAndUpdate(
+            req.params.id,
+            dadosAluno,
+            { new: true, runValidators: true }
+        );
+
         res.status(200).json(alunoAtualizado);
     } catch (error) {
         res.status(400).json({ message: error.message });

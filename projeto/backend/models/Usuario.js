@@ -10,10 +10,11 @@ const UsuarioSchema = new mongoose.Schema({
 // Pré-processamento antes de salvar o usuário
 UsuarioSchema.pre('save', async function(next) {
     if (!this.isModified('senha')) {
-        next();
+        return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.senha = await bcrypt.hash(this.senha, salt);
+    next();
 });
 
 // Método para comparar a senha
