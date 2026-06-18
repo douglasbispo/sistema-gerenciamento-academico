@@ -87,9 +87,7 @@ npm install
 
 3. Crie um arquivo `.env` na raiz da pasta `backend` e adicione as seguintes variáveis:
 ```env
-MONGO_URI=sua_uri_do_mongodb
 JWT_SECRET=sua_chave_secreta_aqui
-PORT=5000
 
 ```
 
